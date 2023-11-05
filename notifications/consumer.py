@@ -14,7 +14,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         )
 
         await self.accept()
-        self.send(self,"hemanth")
+
 
 
     async def disconnect(self, close_code):
@@ -41,12 +41,24 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     #     await  self.send("hrerkjlewnrkjewrn")
 
     async def receive(self, text_data):
-        print((text_data))
-        # Send message to WebSocket
-        await self.send(text_data)
-    # Receive message from room group
-    async def send_notification(self, event):
-        message = json.loads(event['message'])
+
+        json_data=json.loads(text_data)
+        print(type(json_data))
+
+        num1=json_data["num1"]
+        num2=json_data["num2"]
+        print(num1,num2)
+        print(type(int(num1)))
+        print(type(int(num2)))
 
         # Send message to WebSocket
-        await self.send(text_data=json.dumps(message))
+        response_data = {
+             "result":int(num1) * int(num2)
+        }
+        await self.send(json.dumps(response_data))
+    # Receive message from room group
+    # async def send_notification(self, event):
+    #     message = json.loads(event['message'])
+    #
+    #     # Send message to WebSocket
+    #     await self.send(text_data=json.dumps(message))
